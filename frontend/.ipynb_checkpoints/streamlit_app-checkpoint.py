@@ -15,7 +15,7 @@ minutes_played = st.sidebar.number_input(
 )
 goals = st.sidebar.number_input("Goals", min_value=0, max_value=100, value=10, step=1)
 
-# When the button is pressed
+# Trigger prediction
 if st.sidebar.button("Predict Value"):
     try:
         params = {"age": age, "minutes_played": minutes_played, "goals": goals}
