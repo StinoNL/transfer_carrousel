@@ -1,2 +1,2 @@
 clean_data/*.csv
-#first_dataset/*
+raw_data/*
