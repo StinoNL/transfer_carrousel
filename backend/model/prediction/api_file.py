@@ -8,6 +8,6 @@ def root():
     return {"message": "the football scout is ready to go!"}
 
 @app.get("/predict")
-def predict(age: float, minutes_played: float, goals: float):
-    prediction = predict_player_value(age, minutes_played, goals)
+def predict(age: float, minutes_played: float, goals: float, assists: float, position: str):
+    prediction = predict_player_value(age, minutes_played, goals, assists, position)
     return {"predicted_value": prediction}
