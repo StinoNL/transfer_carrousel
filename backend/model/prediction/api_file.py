@@ -1,14 +1,22 @@
-<<<<<<< HEAD
-
-import pickle
 import os
+import pickle
+from fastapi import FastAPI
+import pandas as pd   # ← importa pandas
 
-#Takes 3 inputs: age, minutes, goals
-def predict_player_value(age: float, minutes_played: float, goals: float, assists: float, position: str):
+app = FastAPI()
 
-    """
-    Load trained model and return value prediction.
-    """
+@app.get("/")
+def root():
+    return {'greeting': "hello"}
+
+@app.get("/prediction")
+def predict_player_value(
+    age: float,
+    minutes_played: float,
+    goals: float,
+    assists: float,
+    position: str,
+):
     model_path = os.path.join(
         os.path.dirname(__file__),
         '..',
@@ -18,24 +26,22 @@ def predict_player_value(age: float, minutes_played: float, goals: float, assist
     with open(model_path, 'rb') as f:
         model = pickle.load(f)
 
-    #Makes a prediction
-    X_pred = [[age, minutes_played, goals, assists, position]]
-    prediction = model.predict(X_pred)
+    #CALCULATE THE GOALS AND ASSISTS PER MINUTE
+    goals_per_minute_calculate = goals / minutes_played
+    assists_per_minute_calculate = assists / minutes_played
+    print(goals_per_minute_calculate, assists_per_minute_calculate)
 
-    #Returns a single value (the predicted transfer value)
-    return prediction[0]
-=======
-from fastapi import FastAPI
-from model.prediction.prediction import predict_player_value
+    input_df = pd.DataFrame([{
+        "age": age,
+        "minutes_played": minutes_played,
+        "goals": goals,
+        "assists": assists,
+        "position": position,
+        "goals_per_minute": goals_per_minute_calculate,
+        "assists_per_minute": assists_per_minute_calculate
+    }])
 
-app = FastAPI()
-
-@app.get("/")
-def root():
-    return {"message": "the football scout is ready to go!"}
-
-@app.get("/predict")
-def predict(age: float, minutes_played: float, goals: float):
-    prediction = predict_player_value(age, minutes_played, goals)
-    return {"predicted_value": prediction}
->>>>>>> 0f4fa3a6387a3fb825e49ff293d0e3ec162004ee
+    prediction = model.predict(input_df)
+    
+    return {'prediction': prediction[0]}
+    #return {'prediction': prediction[0], 'goals_per_minute_calculate': goals_per_minute_calculate, 'assists_per_minute_calculate': assists_per_minute_calculate}

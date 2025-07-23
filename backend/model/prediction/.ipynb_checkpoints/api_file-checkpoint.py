@@ -1,13 +1,47 @@
+import os
+import pickle
 from fastapi import FastAPI
-from model.prediction.prediction import predict_player_value
+import pandas as pd   # ← importa pandas
 
 app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "the football scout is ready to go!"}
+    return {'greeting': "hello"}
 
-@app.get("/predict")
-def predict(age: float, minutes_played: float, goals: float):
-    prediction = predict_player_value(age, minutes_played, goals)
-    return {"predicted_value": prediction}
+@app.get("/prediction")
+def predict_player_value(
+    age: float,
+    minutes_played: float,
+    goals: float,
+    assists: float,
+    position: str,
+):
+    model_path = os.path.join(
+        os.path.dirname(__file__),
+        '..',
+        'stjin_model.pkl'
+    )
+
+    with open(model_path, 'rb') as f:
+        model = pickle.load(f)
+
+    #CALCULATE THE GOALS AND ASSISTS PER MINUTE
+    goals_per_minute_calculate = goals / minutes_played
+    assists_per_minute_calculate = assists / minutes_played
+    print(goals_per_minute_calculate, assists_per_minute_calculate)
+
+    input_df = pd.DataFrame([{
+        "age": age,
+        "minutes_played": minutes_played,
+        "goals": goals,
+        "assists": assists,
+        "position": position,
+        "goals_per_minute": goals_per_minute_calculate,
+        "assists_per_minute": assists_per_minute_calculate
+    }])
+
+    prediction = model.predict(input_df)
+    
+    return {'prediction': prediction[0]}
+    #return {'prediction': prediction[0], 'goals_per_minute_calculate': goals_per_minute_calculate, 'assists_per_minute_calculate': assists_per_minute_calculate}
