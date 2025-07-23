@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 import pickle
 import os
@@ -23,3 +24,18 @@ def predict_player_value(age: float, minutes_played: float, goals: float, assist
 
     #Returns a single value (the predicted transfer value)
     return prediction[0]
+=======
+from fastapi import FastAPI
+from model.prediction.prediction import predict_player_value
+
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"message": "the football scout is ready to go!"}
+
+@app.get("/predict")
+def predict(age: float, minutes_played: float, goals: float):
+    prediction = predict_player_value(age, minutes_played, goals)
+    return {"predicted_value": prediction}
+>>>>>>> 0f4fa3a6387a3fb825e49ff293d0e3ec162004ee
