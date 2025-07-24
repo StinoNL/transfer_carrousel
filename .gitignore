@@ -3,3 +3,4 @@ clean_data/*.csv
 first_dataset/*.csv
 to_merge_data/*.csv
 first_dataset/*.csv
+.env
