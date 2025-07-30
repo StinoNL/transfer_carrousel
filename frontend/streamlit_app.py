@@ -56,3 +56,42 @@ if st.sidebar.button("Predict Value"):
                 st.error("Unexpected response structure from server.")
         except Exception as e:
             st.error(f"Error fetching prediction: {e}")
+
+# New section to recommend similar players
+st.sidebar.markdown("---")
+st.sidebar.subheader("Find Cheaper Alternatives")
+player_name_input = st.sidebar.text_input("Compare With Player Name", "")
+
+def fetch_recommendations(player_name):
+    """
+    Call the recommend API and return similar players.
+    """
+    response = requests.get(f"{API_BASE_URL}/recommend", params={"player_name": player_name})
+    response.raise_for_status()
+    return response.json()
+
+if st.sidebar.button("Find Similar Players"):
+    if not player_name_input.strip():
+        st.warning("Please enter a player name.")
+    else:
+        with st.spinner("Fetching similar players..."):
+            try:
+                similar_players = fetch_recommendations(player_name_input)
+                st.markdown(f"## 🔍 Similar Players to **{player_name_input}**")
+                for player in similar_players:
+                    with st.container():
+                        cols = st.columns([1, 2])
+                        with cols[0]:
+                            st.image(player["image_url"], width=120)
+                        with cols[1]:
+                            st.markdown(f"**{player['player_name']}** ({player['age']} yrs, {player['position']})")
+                            st.markdown(f"**Club:** {player['club_name']}")
+                            st.markdown(f"**Cluster:** _{player['cluster_name']}_")
+                            st.markdown(
+                                f"📊 Goals: {player['goals']}, Assists: {player['assists']}  \n"
+                                f"💰 Max Market Value: €{player['max_market_value']:,}  \n"
+                                f"💸 Market Value (Million): €{player['market_value_million']:,}M"
+                            )
+                        st.markdown("---")
+            except Exception as e:
+                st.error(f"Failed to fetch recommendations: {e}")
