@@ -8,9 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-#API_BASE_URL = "https://my-api-app-154142035363.europe-west1.run.app"
-
-API_BASE_URL = "http://127.0.0.1:8000/"
+API_BASE_URL = "https://my-api-app-154142035363.europe-west1.run.app"
 
 st.title("⚽ Football Transfer Value Predictor")
 st.write(
