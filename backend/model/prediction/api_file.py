@@ -2,7 +2,7 @@ import os
 import pickle
 from fastapi import FastAPI
 import pandas as pd
-from .recommender import recommend_similar_players_by_name
+from recommender import recommend_similar_players_by_name
 
 
 df_clean = pd.read_csv(
