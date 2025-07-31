@@ -2,11 +2,11 @@ import os
 import pickle
 from fastapi import FastAPI
 import pandas as pd
-from recommender import recommend_similar_players_by_name
+from .recommender import recommend_similar_players_by_name
 
 
 df_clean = pd.read_csv(
-     '../clean_data/clean_players_clustered.csv',
+     './clean_data/clean_players_clustered.csv',
     encoding="utf-8")
 
 app = FastAPI()
@@ -27,6 +27,10 @@ def predict_player_value(
     goals: float,
     assists: float,
     position: str,
+    height_in_cm: float,
+    yellow_cards: float,
+    red_cards: float,
+    foot: str
 ):
     model_path = os.path.join(
         os.path.dirname(__file__),
@@ -49,7 +53,11 @@ def predict_player_value(
         "assists": assists,
         "position": position,
         "goals_per_minute": goals_per_minute_calculate,
-        "assists_per_minute": assists_per_minute_calculate
+        "assists_per_minute": assists_per_minute_calculate,
+        "height_in_cm": height_in_cm,
+        "yellow_cards": yellow_cards,
+        "red_cards": red_cards,
+        "foot": foot
     }])
 
     prediction = model.predict(input_df)
