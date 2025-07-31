@@ -8,7 +8,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-API_BASE_URL = "https://my-api-app-154142035363.europe-west1.run.app"
+#API_BASE_URL = "https://my-api-app-154142035363.europe-west1.run.app"
+
+API_BASE_URL = "http://127.0.0.1:8000/"
 
 st.title("⚽ Football Transfer Value Predictor")
 st.write(
@@ -22,7 +24,12 @@ minutes_played = st.sidebar.number_input(
 )
 goals = st.sidebar.number_input("Goals", min_value=0, max_value=100, value=10, step=1)
 assists = st.sidebar.number_input("Assists", min_value=0, max_value=100, value=5, step=1)
-position = st.sidebar.selectbox("Position", ["Goalkeeper", "Defender", "Midfield", "Attack"])
+position = st.sidebar.selectbox("Position", ["Defender", "Midfield", "Attack"])
+height_in_cm = st.sidebar.number_input("Height (cm)", min_value=100, max_value=250, value=180, step=1)
+yellow_cards = st.sidebar.number_input("Yellow Cards", min_value=0, max_value=20, value=0, step=1)
+red_cards = st.sidebar.number_input("Red Cards", min_value=0, max_value=10, value=0, step=1)
+foot = st.sidebar.selectbox("Foot", ["right", "Left", "Both"])
+
 
 def fetch_prediction(params):
     """
@@ -40,7 +47,11 @@ if st.sidebar.button("Predict Value"):
                 "minutes_played": minutes_played,
                 "goals": goals,
                 "assists": assists,
-                "position": position
+                "position": position,
+                "height_in_cm": height_in_cm,
+                "yellow_cards": yellow_cards,
+                "red_cards": red_cards,
+                "foot": foot
             }
             data = fetch_prediction(params)
             value = data.get("prediction")
