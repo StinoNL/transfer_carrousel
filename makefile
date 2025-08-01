@@ -1,3 +1,9 @@
+ifneq (,$(wildcard .env))
+  include .env
+endif
+
+export IMAGE GCP_PROJECT GCP_REGION ARTIFACTSREPO MEMORY
+
 build_container_local:
 	docker build --tag=${IMAGE}:dev .
 
