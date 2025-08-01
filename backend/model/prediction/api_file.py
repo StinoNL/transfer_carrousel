@@ -2,12 +2,13 @@ import os
 import pickle
 from fastapi import FastAPI
 import pandas as pd
-from recommender import recommend_similar_players_by_name
+from backend.model.prediction.recommender import recommend_similar_players_by_name
 
 df_clean = pd.read_csv(
-    os.path.join(os.path.dirname(__file__), '..', 'clean_data', 'clean_players_clustered.csv'),
+    os.path.join( 'backend', 'clean_data', 'clean_players_clustered.csv'),
     encoding='utf-8'
 )
+
 app = FastAPI()
 
 @app.get("/")
@@ -31,7 +32,7 @@ def predict_player_value(
     red_cards: float,
     foot: str
 ):
-    model_path = '/app/stjin_model.pkl'
+    model_path = 'backend/model/stjin_model.pkl'
 
     with open(model_path, 'rb') as f:
         model = pickle.load(f)
