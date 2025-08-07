@@ -10,9 +10,12 @@ st.set_page_config(
 
 API_BASE_URL = "https://my-api-app-154142035363.europe-west1.run.app"
 
-st.title("⚽ Football Transfer Value Predictor & player suggestor")
+st.title("⚽ Football Transfer Value Predictor & Player Suggestor")
 st.write(
     "Enter player stats in the sidebar and click **Predict Value** to estimate the transfer fee."
+)
+st.write(
+    "Use the **Find Cheaper Alternatives** section to discover similar players based on a given name."
 )
 
 st.sidebar.header("Player Stats")
@@ -26,7 +29,7 @@ position = st.sidebar.selectbox("Position", ["Defender", "Midfield", "Attack"])
 height_in_cm = st.sidebar.number_input("Height (cm)", min_value=100, max_value=250, value=180, step=1)
 yellow_cards = st.sidebar.number_input("Yellow Cards", min_value=0, max_value=20, value=0, step=1)
 red_cards = st.sidebar.number_input("Red Cards", min_value=0, max_value=10, value=0, step=1)
-foot = st.sidebar.selectbox("Foot", ["right", "Left", "Both"])
+foot = st.sidebar.selectbox("Foot", ["Right", "Left", "Both"])
 
 
 def fetch_prediction(params):
@@ -98,7 +101,6 @@ if st.sidebar.button("Find Similar Players"):
                             st.markdown(f"**Cluster:** _{player['cluster_name']}_")
                             st.markdown(
                                 f"📊 Goals: {player['goals']}, Assists: {player['assists']}  \n"
-                                f"💰 Max Market Value: €{player['max_market_value']:,}  \n"
                                 f"💸 Market Value (Million): €{player['market_value_million']:,}M"
                             )
                         st.markdown("---")
