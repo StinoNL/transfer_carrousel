@@ -57,13 +57,22 @@ if st.sidebar.button("Predict Value"):
             data = fetch_prediction(params)
             value = data.get("prediction")
             if value is not None:
-                col1, col2, col3 = st.columns(3)
-                col1.metric("Estimated Value", f"€{value:,.0f}")
+                with st.container():
+                    st.markdown(
+                        f"""
+                        <div style='text-align: center; margin-top: 30px;'>
+                            <h2 style='font-size: 40px; color: #1a1a1a;'>Estimated Value</h2>
+                            <h1 style='font-size: 60px; color: #007200;'>€💰{value:,.0f}</h1>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
                 st.success("Prediction successful!")
             else:
                 st.error("Unexpected response structure from server.")
         except Exception as e:
             st.error(f"Error fetching prediction: {e}")
+
 
 # New section to recommend similar players
 st.sidebar.markdown("---")
