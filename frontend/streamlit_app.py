@@ -10,12 +10,12 @@ st.set_page_config(
 
 API_BASE_URL = "https://my-api-app-154142035363.europe-west1.run.app"
 
-st.title("⚽ Transfer Value Predictor & Player Suggestor")
+st.title("⚽ Value Predictor & Player Suggestor")
 st.write(
     "Enter player stats in the sidebar and click **Predict Value** to estimate the transfer fee."
 )
 st.write(
-    "Use the **Find Cheaper Alternatives** section to discover similar players based on a given name."
+    "Use the **Find Cheaper Alternatives** section below **Predict Value** to discover similar players based on a given name."
 )
 
 st.sidebar.header("Player Stats")
